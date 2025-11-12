@@ -1,8 +1,90 @@
-你的用户名.github.io/
-├── index.html          # 主页面文件
-├── styles/
-│   └── style.css       # 样式文件
-├── scripts/
-│   └── script.js       # JavaScript文件
-└── images/
-    └── photo.jpg       # 个人照片
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的学术主页</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">首页</a></li>
+                <li><a href="#about">关于我</a></li>
+                <li><a href="#research">研究方向</a></li>
+                <li><a href="#knowledge-graph">知识图谱</a></li>
+                <li><a href="#contact">联系方式</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <img src="images/photo.jpg" alt="个人照片" class="profile-photo">
+                <h1>刘一博</h1>
+                <p>天津医科大学 | 医学影像学 | 本科生</p>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <h2>关于我</h2>
+                <p>我是天津大学医学影像学的本科生，2022.09-2023.07担任医学影像学院学生会社团管理中心千事 
+2022.09-2024.07担任医学影像学院学生会组织宣传部千事
+通过CET4 
+2024年天律医科大学中国国际大学生创新大赛主赛道银奖 </p>
+            </div>
+        </section>
+
+        <section id="research" class="research">
+            <div class="container">
+                <h2>研究方向</h2>
+                <div class="research-grid">
+                    <div class="research-item">
+                        <h3>医学影像分析</h3>
+                        <p>使用深度学习技术分析MRI、CT等医学影像...</p>
+                    </div>
+                    <div class="research-item">
+                        <h3>知识图谱构建</h3>
+                        <p>构建医学影像领域的知识图谱，整合多源医学数据...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="knowledge-graph" class="knowledge-graph">
+            <div class="container">
+                <h2>医学影像知识图谱</h2>
+                <p>以下是我构建的磁共振成像(MRI)知识图谱的可视化展示：</p>
+                <div id="graph-container"></div>
+                <div class="graph-description">
+                    <h3>知识图谱说明</h3>
+                    <ul>
+                        <li>包含MRI设备、原理、临床应用等核心概念</li>
+                        <li>整合了相关解剖学、病理学知识</li>
+                        <li>支持交互式查询和可视化探索</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>联系方式</h2>
+                <p>邮箱: your.email@university.edu</p>
+                <p>地址: 某某大学医学影像学院</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 张三. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script src="scripts/script.js"></script>
+</body>
+</html>
