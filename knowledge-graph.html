@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医学影像知识图谱 | 个人学术主页</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8fafc;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            margin-right: 8px;
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: #64b5f6;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #64b5f6;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* 知识图谱区域样式 */
+        .knowledge-graph-section {
+            padding: 4rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        #knowledge-graph {
+            width: 100%;
+            height: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .graph-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+        }
+        
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #3b82f6;
+            color: #3b82f6;
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .node-info {
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #3b82f6;
+            margin-top: 2rem;
+        }
+        
+        .node-info h3 {
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .node-info p {
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+        
+        .info-highlight {
+            background: #f0f9ff;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #0ea5e9;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: #e2e8f0;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #3b82f6;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 0 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            #knowledge-graph {
+                height: 400px;
+            }
+            
+            .graph-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🧠</span>
+                医学影像研究
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="about.html">关于我</a></li>
+                <li><a href="research.html">研究方向</a></li>
+                <li><a href="knowledge-graph.html" style="color: #64b5f6;">知识图谱</a></li>
+                <li><a href="publications.html">发表论文</a></li>
+                <li><a href="contact.html">联系方式</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 知识图谱区域 -->
+    <section class="knowledge-graph-section">
+        <div class="container">
+            <div class="section-header">
+                <h1 class="section-title">医学影像知识图谱</h1>
+                <p class="section-subtitle">交互式可视化展示医学影像领域的核心概念、技术及应用关系，探索不同成像技术之间的联系与发展</p>
+            </div>
+            
+            <div id="knowledge-graph"></div>
+            
+            <div class="graph-controls">
+                <button id="reset-view" class="btn">
+                    <span>🔄</span> 重置视图
+                </button>
+                <button id="toggle-labels" class="btn btn-outline">
+                    <span>🏷️</span> 切换标签
+                </button>
+                <button id="export-graph" class="btn">
+                    <span>📥</span> 导出图像
+                </button>
+                <button id="fullscreen" class="btn btn-outline">
+                    <span>⛶</span> 全屏查看
+                </button>
+            </div>
+            
+            <div class="node-info" id="node-info">
+                <h3>知识图谱说明</h3>
+                <p>点击图谱中的节点查看详细信息。本图谱展示了医学影像领域的核心概念及其相互关系。</p>
+                <p>包含磁共振成像(MRI)、计算机断层扫描(CT)、超声成像、X射线等主要成像技术。</p>
+                <div class="info-highlight">
+                    <p><strong>使用提示：</strong> 拖动节点可以重新布局，滚轮可以缩放视图，点击节点之间的连线可以查看关系。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">个人主页</a></li>
+                        <li><a href="research.html">研究项目</a></li>
+                        <li><a href="publications.html">学术论文</a></li>
+                        <li><a href="resources.html">学习资源</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>研究方向</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">医学影像分析</a></li>
+                        <li><a href="#">人工智能诊断</a></li>
+                        <li><a href="#">知识图谱构建</a></li>
+                        <li><a href="#">影像数据挖掘</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系信息</h3>
+                    <ul class="footer-links">
+                        <li>邮箱: researcher@university.edu</li>
+                        <li>电话: +86 123 4567 8901</li>
+                        <li>地址: 某某大学医学影像学院</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 医学影像研究 | 个人学术主页. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 初始化ECharts实例
+        const graphContainer = document.getElementById('knowledge-graph');
+        const chart = echarts.init(graphContainer);
+        
+        // 知识图谱数据
+        const graphData = {
+            categories: [
+                { name: '成像技术' },
+                { name: '物理原理' },
+                { name: '临床应用' },
+                { name: '设备组件' },
+                { name: '图像特征' },
+                { name: '诊断应用' }
+            ],
+            nodes: [
+                // 成像技术
+                { id: 'medical-imaging', name: '医学影像', category: 0, symbolSize: 60, value: 100 },
+                { id: 'mri', name: '磁共振成像', category: 0, symbolSize: 50, value: 90 },
+                { id: 'ct', name: '计算机断层扫描', category: 0, symbolSize: 45, value: 85 },
+                { id: 'ultrasound', name: '超声成像', category: 0, symbolSize: 45, value: 85 },
+                { id: 'xray', name: 'X射线成像', category: 0, symbolSize: 45, value: 85 },
+                { id: 'pet', name: '正电子发射断层扫描', category: 0, symbolSize: 40, value: 80 },
+                
+                // 物理原理
+                { id: 'magnetism', name: '磁共振现象', category: 1, symbolSize: 35, value: 70 },
+                { id: 'radio-waves', name: '射频脉冲', category: 1, symbolSize: 30, value: 65 },
+                { id: 'xray-physics', name: 'X射线物理', category: 1, symbolSize: 30, value: 65 },
+                { id: 'sound-waves', name: '声波传播', category: 1, symbolSize: 30, value: 65 },
+                { id: 'radioactivity', name: '放射性示踪', category: 1, symbolSize: 30, value: 65 },
+                
+                // 临床应用
+                { id: 'neuro-imaging', name: '神经影像', category: 2, symbolSize: 40, value: 80 },
+                { id: 'cardiac-imaging', name: '心脏影像', category: 2, symbolSize: 40, value: 80 },
+                { id: 'oncologic-imaging', name: '肿瘤影像', category: 2, symbolSize: 40, value: 80 },
+                { id: 'musculoskeletal', name: '肌肉骨骼影像', category: 2, symbolSize: 35, value: 75 },
+                
+                // 设备组件
+                { id: 'magnet', name: '超导磁体', category: 3, symbolSize: 30, value: 65 },
+                { id: 'gradient-coils', name: '梯度线圈', category: 3, symbolSize: 25, value: 60 },
+                { id: 'rf-coils', name: '射频线圈', category: 3, symbolSize: 25, value: 60 },
+                { id: 'detector', name: '探测器', category: 3, symbolSize: 25, value: 60 },
+                { id: 'transducer', name: '换能器', category: 3, symbolSize: 25, value: 60 },
+                
+                // 图像特征
+                { id: 't1-weighted', name: 'T1加权', category: 4, symbolSize: 25, value: 60 },
+                { id: 't2-weighted', name: 'T2加权', category: 4, symbolSize: 25, value: 60 },
+                { id: 'contrast', name: '对比度', category: 4, symbolSize: 20, value: 55 },
+                { id: 'resolution', name: '分辨率', category: 4, symbolSize: 20, value: 55 },
+                { id: 'signal-noise', name: '信噪比', category: 4, symbolSize: 20, value: 55 },
+                
+                // 诊断应用
+                { id: 'tumor-detection', name: '肿瘤检测', category: 5, symbolSize: 35, value: 75 },
+                { id: 'stroke-assessment', name: '卒中评估', category: 5, symbolSize: 35, value: 75 },
+                { id: 'fracture-detection', name: '骨折检测', category: 5, symbolSize: 30, value: 70 },
+                { id: 'soft-tissue-eval', name: '软组织评估', category: 5, symbolSize: 30, value: 70 }
+            ],
+            links: [
+                // 医学影像与技术关联
+                { source: 'medical-imaging', target: 'mri' },
+                { source: 'medical-imaging', target: 'ct' },
+                { source: 'medical-imaging', target: 'ultrasound' },
+                { source: 'medical-imaging', target: 'xray' },
+                { source: 'medical-imaging', target: 'pet' },
+                
+                // MRI相关
+                { source: 'mri', target: 'magnetism' },
+                { source: 'mri', target: 'radio-waves' },
+                { source: 'mri', target: 'magnet' },
+                { source: 'mri', target: 'gradient-coils' },
+                { source: 'mri', target: 'rf-coils' },
+                { source: 'mri', target: 't1-weighted' },
+                { source: 'mri', target: 't2-weighted' },
+                { source: 'mri', target: 'neuro-imaging' },
+                { source: 'mri', target: 'musculoskeletal' },
+                
+                // CT相关
+                { source: 'ct', target: 'xray-physics' },
+                { source: 'ct', target: 'detector' },
+                { source: 'ct', target: 'neuro-imaging' },
+                { source: 'ct', target: 'oncologic-imaging' },
+                
+                // 超声相关
+                { source: 'ultrasound', target: 'sound-waves' },
+                { source: 'ultrasound', target: 'transducer' },
+                { source: 'ultrasound', target: 'cardiac-imaging' },
+                { source: 'ultrasound', target: 'soft-tissue-eval' },
+                
+                // X射线相关
+                { source: 'xray', target: 'xray-physics' },
+                { source: 'xray', target: 'fracture-detection' },
+                
+                // PET相关
+                { source: 'pet', target: 'radioactivity' },
+                { source: 'pet', target: 'oncologic-imaging' },
+                
+                // 临床应用关联
+                { source: 'neuro-imaging', target: 'stroke-assessment' },
+                { source: 'oncologic-imaging', target: 'tumor-detection' },
+                { source: 'musculoskeletal', target: 'fracture-detection' },
+                { source: 'cardiac-imaging', target: 'soft-tissue-eval' },
+                
+                // 图像特征通用
+                { source: 'contrast', target: 'mri' },
+                { source: 'contrast', target: 'ct' },
+                { source: 'resolution', target: 'mri' },
+                { source: 'resolution', target: 'ct' },
+                { source: 'signal-noise', target: 'mri' },
+                { source: 'signal-noise', target: 'ct' }
+            ]
+        };
+        
+        // 节点详细信息
+        const nodeDetails = {
+            'mri': {
+                title: '磁共振成像 (MRI)',
+                description: '利用强磁场和射频脉冲使人体组织中的氢原子核发生共振，然后接收共振信号进行成像的技术。',
+                applications: '神经系统疾病诊断、关节损伤评估、肿瘤检测等。',
+                advantages: '无电离辐射、软组织对比度优异、多参数成像。'
+            },
+            'ct': {
+                title: '计算机断层扫描 (CT)',
+                description: '利用X射线束对人体某部位进行扫描，由探测器接收透过该层面的X射线，经计算机处理获得重建图像。',
+                applications: '急诊创伤、肺部疾病、骨骼系统评估等。',
+                advantages: '成像速度快、空间分辨率高、对钙化和骨骼显示清晰。'
+            },
+            'ultrasound': {
+                title: '超声成像',
+                description: '利用超声波在人体组织中的传播特性，通过接收回声信号来形成图像。',
+                applications: '产科检查、心脏功能评估、腹部器官检查等。',
+                advantages: '无辐射、实时成像、便携性好、成本较低。'
+            },
+            'xray': {
+                title: 'X射线成像',
+                description: '利用X射线穿透人体不同组织时的吸收差异，在胶片或探测器上形成影像。',
+                applications: '骨折诊断、胸部检查、牙科影像等。',
+                advantages: '快速简便、成本低、对骨骼显示清晰。'
+            },
+            'pet': {
+                title: '正电子发射断层扫描 (PET)',
+                description: '通过检测注入体内的放射性示踪剂发射的正电子，来反映生物体内的代谢和功能活动。',
+                applications: '肿瘤学、神经学、心脏病学等。',
+                advantages: '功能成像、高灵敏度、可定量分析。'
+            }
+        };
+        
+        // 图表配置
+        const option = {
+            title: {
+                text: '医学影像知识图谱',
+                top: 'top',
+                left: 'center',
+                textStyle: {
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                    color: '#1e3c72'
+                }
+            },
+            tooltip: {
+                formatter: function(params) {
+                    if (params.dataType === 'node') {
+                        return params.data.name;
+                    }
+                }
+            },
+            legend: [{
+                data: graphData.categories.map(function(a) {
+                    return a.name;
+                }),
+                orient: 'vertical',
+                left: 'left',
+                top: 'middle',
+                textStyle: {
+                    fontSize: 12
+                }
+            }],
+            animationDuration: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            series: [{
+                name: '医学影像知识图谱',
+                type: 'graph',
+                layout: 'force',
+                data: graphData.nodes,
+                links: graphData.links,
+                categories: graphData.categories,
+                roam: true,
+                focusNodeAdjacency: true,
+                label: {
+                    show: true,
+                    position: 'right',
+                    formatter: '{b}',
+                    fontSize: 12
+                },
+                lineStyle: {
+                    color: 'source',
+                    curveness: 0.3,
+                    width: 1.5
+                },
+                emphasis: {
+                    focus: 'adjacency',
+                    lineStyle: {
+                        width: 3
+                    }
+                },
+                force: {
+                    repulsion: 200,
+                    gravity: 0.1,
+                    edgeLength: 100,
+                    layoutAnimation: true
+                }
+            }]
+        };
+        
+        // 应用配置
+        chart.setOption(option);
+        
+        // 节点点击事件
+        chart.on('click', function(params) {
+            if (params.dataType === 'node') {
+                const nodeId = params.data.id;
+                const nodeInfo = document.getElementById('node-info');
+                
+                if (nodeDetails[nodeId]) {
+                    const detail = nodeDetails[nodeId];
+                    nodeInfo.innerHTML = `
+                        <h3>${detail.title}</h3>
+                        <p><strong>描述:</strong> ${detail.description}</p>
+                        <p><strong>主要应用:</strong> ${detail.applications}</p>
+                        <p><strong>优势:</strong> ${detail.advantages}</p>
+                        <div class="info-highlight">
+                            <p><strong>探索更多:</strong> 点击图谱中的其他节点了解更多相关概念。</p>
+                        </div>
+                    `;
+                } else {
+                    nodeInfo.innerHTML = `
+                        <h3>${params.data.name}</h3>
+                        <p>点击图谱中的主要成像技术节点查看详细信息。</p>
+                        <div class="info-highlight">
+                            <p><strong>提示:</strong> 尝试点击"磁共振成像"、"计算机断层扫描"等节点。</p>
+                        </div>
+                    `;
+                }
+            }
+        });
+        
+        // 控制按钮功能
+        document.getElementById('reset-view').addEventListener('click', function() {
+            chart.setOption(option);
+        });
+        
+        document.getElementById('toggle-labels').addEventListener('click', function() {
+            const currentOption = chart.getOption();
+            const showLabels = !currentOption.series[0].label.show;
+            
+            chart.setOption({
+                series: [{
+                    label: {
+                        show: showLabels
+                    }
+                }]
+            });
+        });
+        
+        document.getElementById('export-graph').addEventListener('click', function() {
+            const imageURL = chart.getDataURL({
+                type: 'png',
+                pixelRatio: 2,
+                backgroundColor: '#fff'
+            });
+            
+            const downloadLink = document.createElement('a');
+            downloadLink.href = imageURL;
+            downloadLink.download = '医学影像知识图谱.png';
+            downloadLink.click();
+        });
+        
+        document.getElementById('fullscreen').addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                graphContainer.requestFullscreen().catch(err => {
+                    console.log(`全屏请求错误: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+        
+        // 响应窗口大小变化
+        window.addEventListener('resize', function() {
+            chart.resize();
+        });
+    </script>
+</body>
+</html>
