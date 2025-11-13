@@ -116,12 +116,12 @@
         
         .avatar {
             width: 180px;
-            height: 180px;
-            border-radius: 8px;
+            height: 240px;
             object-fit: cover;
             margin: 0 auto 30px;
             border: 4px solid white;
             box-shadow: var(--shadow);
+            border-radius: 4px;
         }
         
         .hero h1 {
@@ -187,13 +187,8 @@
         }
         
         .about-content {
-            display: flex;
-            align-items: center;
-            gap: 50px;
-        }
-        
-        .about-text {
-            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
         .about-text p {
@@ -201,16 +196,6 @@
             line-height: 1.8;
             margin-bottom: 20px;
             color: var(--text);
-        }
-        
-        .about-image {
-            flex: 0 0 300px;
-        }
-        
-        .about-image img {
-            width: 100%;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
         }
         
         /* 知识图谱部分 */
@@ -363,11 +348,6 @@
             .about-content {
                 flex-direction: column;
             }
-            
-            .about-image {
-                flex: 0 0 auto;
-                width: 70%;
-            }
         }
         
         @media (max-width: 768px) {
@@ -441,7 +421,7 @@
     <!-- 导航栏 -->
     <header>
         <div class="container header-content">
-            <a href="#" class="logo">刘<span>一博</span></a>
+            <a href="#" class="logo">刘一博</span></a>
             <nav>
                 <ul>
                     <li><a href="#home">首页</a></li>
@@ -456,7 +436,7 @@
     <!-- 首页横幅 -->
     <section id="home" class="hero">
         <div class="container hero-content">
-            <img src="https://via.placeholder.com/180" alt="刘一博" class="avatar">
+            <img src="images/photo.jpg" alt="刘一博" class="avatar">
             <h1>刘一博</h1>
             <p>医学影像学研究者</p>
             <p class="university">天津医科大学 | 医学影像学 | 本科生</p>
@@ -473,9 +453,6 @@
                     <p>我是刘一博，天津医科大学医学影像学专业本科生。目前，我致力于医学影像学与人工智能的交叉领域研究，独立构建并完善了一个结构化的医学影像领域知识图谱。</p>
                     <p>该知识图谱系统性地整合了影像学表现、病理基础、诊断要点及相关解剖学等多元信息，旨在探索如何利用结构化知识辅助医学学习与临床决策支持。</p>
                     <p>本项目代表了我对医学影像学深度理解的实践与延伸。如果您对该知识图谱的项目细节、构建方法或潜在应用感兴趣，我十分乐意与您进行深入的学术交流。</p>
-                </div>
-                <div class="about-image">
-                    <img src="https://via.placeholder.com/300x400" alt="研究照片">
                 </div>
             </div>
         </div>
